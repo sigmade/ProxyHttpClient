@@ -41,11 +41,13 @@ namespace ProxyHttpClient
                         Credentials = new NetworkCredential { UserName = Configuration["ProxyOptions:Username"], Password = Configuration["ProxyOptions:Password"] }
                     }
                 }));
-            services.AddHttpClient<PublicProxysHttpClient>().
+            services.AddHttpClient<CurrentHttpClient>();
+            services.AddHttpClient<ProxysHttpClient>().
                 ConfigurePrimaryHttpMessageHandler((c => new HttpClientHandler()
                 {
-                    Proxy = new WebProxy(Configuration["PublicProxy:Address"])
+                    Proxy = new WebProxy(Configuration["ProxyOptions:Address"])
                     {
+                        Credentials = new NetworkCredential { UserName = Configuration["ProxyOptions:Username"], Password = Configuration["ProxyOptions:Password"] }
                     }
                 }));
         }

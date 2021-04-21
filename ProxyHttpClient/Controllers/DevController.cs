@@ -12,28 +12,38 @@ namespace ProxyHttpClient.Controllers
     public class DevController : ControllerBase
     {
         private readonly ProxysHttpClient _proxysHttp;
-        private readonly PublicProxysHttpClient _publicProxy;
+        private readonly CurrentHttpClient _current;
         public DevController(
             ProxysHttpClient proxysHttp,
-            PublicProxysHttpClient publicProxy)
+            CurrentHttpClient current)
         {
             _proxysHttp = proxysHttp;
-            _publicProxy = publicProxy;
+            _current = current;
         }
 
         // GET: api/<DevController>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            Random random = new();
+            int value = random.Next(1,3);
             var response = await _proxysHttp.GetResponse("http://httpbin.org/get");
+            if (value == 1)
+            {
+                 response = await _proxysHttp.GetResponse("http://httpbin.org/get");
+            }
+            else
+            {
+                response = await _current.GetResponse("http://httpbin.org/get");
+            }
             var json = await response.Content.ReadAsStringAsync();
             return Ok(json);
         }
 
-        [HttpGet("public")]
-        public async Task<IActionResult> GetPublic()
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrent()
         {
-            var response = await _publicProxy.GetResponse("http://httpbin.org/get");
+            var response = await _current.GetResponse("http://httpbin.org/get");
             var json = await response.Content.ReadAsStringAsync();
             return Ok(json);
         }
