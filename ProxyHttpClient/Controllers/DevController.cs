@@ -26,16 +26,15 @@ namespace ProxyHttpClient.Controllers
         public async Task<IActionResult> Get()
         {
             Random random = new();
-            int value = random.Next(1,3);
-            var response = await _proxysHttp.GetResponse("http://httpbin.org/get");
-            if (value == 1)
+
+            int value = random.Next(1, 3);
+
+            var response = value switch
             {
-                 response = await _proxysHttp.GetResponse("http://httpbin.org/get");
-            }
-            else
-            {
-                response = await _current.GetResponse("http://httpbin.org/get");
-            }
+                1 => await _proxysHttp.GetResponse("http://httpbin.org/get"),
+                2 => await _current.GetResponse("http://httpbin.org/get"),
+                _ => await _proxysHttp.GetResponse("http://httpbin.org/get"),
+            };
             var json = await response.Content.ReadAsStringAsync();
             return Ok(json);
         }
