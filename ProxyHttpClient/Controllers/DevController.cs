@@ -29,12 +29,14 @@ namespace ProxyHttpClient.Controllers
 
             int value = random.Next(1, 3);
 
-            var response = value switch
-            {
-                1 => await _proxysHttp.GetResponse("http://httpbin.org/get"),
-                2 => await _current.GetResponse("http://httpbin.org/get"),
-                _ => await _proxysHttp.GetResponse("http://httpbin.org/get"),
-            };
+            //var response = value switch
+            //{
+            //    1 => await _proxysHttp.GetResponse("http://httpbin.org/get"),
+            //    2 => await _current.GetResponse("http://httpbin.org/get"),
+            //    _ => await _proxysHttp.GetResponse("http://httpbin.org/get"),
+            //};
+
+            var response = await _proxysHttp.GetResponse("http://httpbin.org/get");
             var json = await response.Content.ReadAsStringAsync();
             return Ok(json);
         }
