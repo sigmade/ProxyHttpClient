@@ -42,7 +42,7 @@ namespace ProxyHttpClient
                     }
                 }));
             services.AddHttpClient<CurrentHttpClient>();
-            services.AddHttpClient<ProxysHttpClient>().
+            services.AddHttpClient<PublicProxysHttpClient>().
                 ConfigurePrimaryHttpMessageHandler((c => new HttpClientHandler()
                 {
                     Proxy = new WebProxy(Configuration["ProxyOptions:Address"])
